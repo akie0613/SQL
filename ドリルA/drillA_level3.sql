@@ -1,0 +1,71 @@
+--level3-24
+SELECT *
+FROM 口座
+ORDER BY 口座番号;
+
+--level3-25
+SELECT DISTINCT 名義
+FROM 口座
+ORDER BY 名義;
+
+--level3-26
+SELECT *
+FROM 口座
+ORDER BY 4 DESC, 1;
+
+--level3-27
+SELECT 更新日
+FROM 口座
+WHERE 更新日 IS NOT NULL
+ORDER BY 更新日
+OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;
+
+--level3-28
+SELECT 更新日,残高
+FROM 口座
+WHERE 残高 <> 0 AND 更新日 IS NOT NULL
+ORDER BY 残高,更新日 DESC
+OFFSET 10 ROWS FETCH NEXT 10 ROWS ONLY;
+
+--level3-29
+SELECT 口座番号
+FROM 口座
+UNION
+SELECT 口座番号
+FROM 廃止口座
+ORDER BY 口座番号;
+
+--level3-30
+SELECT DISTINCT 名義
+FROM 口座
+EXCEPT
+SELECT 名義
+FROM 廃止口座
+ORDER BY 名義 DESC;
+
+--level3-31
+SELECT 名義
+FROM 口座
+INTERSECT
+SELECT 名義
+FROM 廃止口座
+ORDER BY 名義 DESC;
+
+--level3-32
+SELECT 口座番号,残高
+FROM 口座
+WHERE 残高 = 0
+UNION
+SELECT 口座番号,解約時残高
+FROM 廃止口座
+WHERE 解約時残高 <>0
+ORDER BY 口座番号;
+
+--level3-33
+SELECT 口座番号,名義,口座状況='〇'
+FROM 口座
+UNION 
+SELECT 口座番号,名義,口座状況='×'
+FROM 廃止口座
+ORDER BY 名義;
+
