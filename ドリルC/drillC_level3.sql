@@ -51,6 +51,14 @@ ORDER BY 職業コード;
 --level3-31
 SELECT イベント番号
 FROM イベント
+EXCEPT
+SELECT イベント番号
+FROM 経験イベント
+ORDER BY イベント番号;
+
+--level3-32
+SELECT イベント番号
+FROM イベント
 WHERE タイプ = '2'
 INTERSECT
 SELECT イベント番号
