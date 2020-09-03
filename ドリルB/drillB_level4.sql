@@ -7,7 +7,7 @@ ORDER BY 商品区分;
 --LEVEL4-35
 UPDATE 注文
 SET クーポン割引料 = クーポン割引料 + 300
-WHERE 注文日 BETWEEN '2018-03-12' AND '2018-03-14' AND 数量 >= 2 
+WHERE 注文日 BETWEEN '2018-03-12' AND '2018-03-14' AND 数量 >= 2 AND クーポン割引料 IS NOT NULL
 
 --LEVEL4-36
 UPDATE 注文
@@ -16,7 +16,8 @@ WHERE 注文番号 = '201802250126' AND 商品コード = 'W0156';
 
 --LEVEL4-37
 SELECT 注文日,CONCAT(注文番号,'-',注文枝番) AS 注文番号,商品コード,数量,クーポン割引料
-FROM 注文;
+FROM 注文
+WHERE 注文番号 BETWEEN'201710010001' AND '201710319999';
 
 --LEVEL4-38
 SELECT DISTINCT 商品区分 AS 区分, 
@@ -64,7 +65,8 @@ ORDER BY 注文番号;
 
 --LEVEL4-44
 UPDATE 廃番商品
-SET 廃番日 = FORMAT(CURRENT_TIMESTAMP,'yyyy-MM-dd')
+--SET 廃番日 = FORMAT(CURRENT_TIMESTAMP,'yyyy-MM-dd')
+SET 廃番日 = FORMAT(GETDATE(),'yyyy-MM-dd')
 WHERE 商品コード = 'S1990';
 
 --LEVEL4-45
