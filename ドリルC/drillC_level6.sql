@@ -36,13 +36,21 @@ WHERE イベント番号 IN (SELECT イベント番号
 						FROM 経験イベント)
 ORDER BY イベント番号;
 
+--LEVEL6-57修正版
+SELECT イベント番号, イベント名称
+FROM イベント
+WHERE イベント番号 NOT IN (SELECT イベント番号
+							FROM 経験イベント)
+ORDER BY イベント番号;
+
 --LEVEL6-58
 SELECT COUNT(*) AS イベント数
 FROM(SELECT イベント番号
-FROM イベント
-EXCEPT
-SELECT イベント番号
-FROM 経験イベント) AS SUB;
+		FROM イベント
+	EXCEPT
+	SELECT イベント番号
+		FROM 経験イベント
+	) AS SUB;
 
 --LEVEL6-59
 SELECT イベント番号,イベント名称
