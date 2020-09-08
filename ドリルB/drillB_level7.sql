@@ -43,6 +43,13 @@ FROM 廃番商品 AS H
 	ON H.商品コード = T.商品コード
 	AND 注文日 BETWEEN '2016-08-01' AND '2016-08-31';
 
+--LEVEL7-65_修正版
+SELECT T.商品コード ,COALESCE(S.商品名,'廃番') AS 商品名
+FROM 注文 AS T
+	LEFT JOIN 商品 AS S
+         ON T.商品コード = S.商品コード
+WHERE 注文日 BETWEEN '2016-08-01' AND '2016-08-31'
+
 --LEVEL7-66
 SELECT 注文日,CONCAT(S.商品コード,':',商品名)AS 商品,
 	CASE 
