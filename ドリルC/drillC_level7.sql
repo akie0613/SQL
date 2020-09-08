@@ -3,7 +3,8 @@ SELECT K.ルート番号, I.イベント番号, I.イベント名称, K.クリア結果
 FROM イベント AS I
 	JOIN 経験イベント AS K
 	ON I.イベント番号 = K.イベント番号
-WHERE クリア区分 = '1';
+WHERE クリア区分 = '1'
+ORDER BY K.ルート番号;
 
 --LEVEL7-63
 SELECT I.イベント番号, I.イベント名称, クリア区分
@@ -28,7 +29,7 @@ FROM パーティー AS P
 	JOIN コード AS KJ
 	ON P.状態コード = KJ.コード値
 	AND KJ.コード種別 = '2'
-ORDER BY KS.コード名称, KJ.コード名称;
+ORDER BY P.ID;
 
 --LEVEL7-66
 SELECT ID , COALESCE(名称,'仲間になっていない！') AS なまえ ,KS.コード名称
@@ -67,4 +68,5 @@ FROM イベント AS I
 			FROM イベント
 			WHERE 前提イベント番号 IS NOT NULL
 			GROUP BY 前提イベント番号) AS C
-	ON I.前提イベント番号 = C.前提イベント番号;
+	ON I.前提イベント番号 = C.前提イベント番号
+ORDER BY イベント番号;
