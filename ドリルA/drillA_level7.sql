@@ -10,6 +10,15 @@ FROM 取引 AS T1
 WHERE 口座番号 IN ('0311240','1234161','2750902')
 ORDER BY 口座番号,取引番号;
 
+--LEVEL7-65修正版
+SELECT 口座番号,日付,取引事由名
+,COALESCE(入金額,COALESCE(出金額,0)) AS 取引金額 
+FROM 取引 AS T1
+	JOIN 取引事由 AS J1
+	ON T1.取引事由ID = J1.取引事由ID
+WHERE 口座番号 IN ('0311240','1234161','2750902')
+ORDER BY 口座番号,取引番号;
+
 --LEVEL7-66
 SELECT K.口座番号,名義,残高,日付,入金額,出金額
 FROM 口座 AS K
@@ -37,6 +46,21 @@ FROM 廃止口座 AS K
 	JOIN 取引 AS T
 	ON K.口座番号 = T.口座番号
 WHERE 日付 = '2016-03-01';
+
+--LEVEL7-68修正版
+SELECT T.口座番号,COALESCE(K.名義,'解約済み') AS 名義 ,COALESCE(K.残高,0) AS 残高
+  FROM 取引 AS T
+  LEFT JOIN 口座 AS K
+         ON T.口座番号 = K.口座番号
+WHERE 日付 = '2016-03-01'
+
+UNION
+SELECT K.口座番号,'解約済み' AS 名義, 0 AS 残高 
+FROM 廃止口座 AS K
+	JOIN 取引 AS T
+	ON K.口座番号 = T.口座番号
+WHERE 日付 = '2016-03-01';
+
 
 --LEVEL7-69
 SELECT 取引番号, CONCAT(J.取引事由ID,':',取引事由名) AS 取引事由
@@ -102,11 +126,12 @@ GROUP BY T.口座番号,日付,名義
 HAVING COUNT(*) >= 3;
 
 --LEVEL7-75
-SELECT 名義,K.口座番号,種別,残高,更新日
+SELECT K.名義,K.口座番号,種別,残高,更新日
 FROM 口座 AS K
-	JOIN (SELECT 口座番号, COUNT(*) AS 口座数
+	JOIN (SELECT 名義, COUNT(*) AS 口座数
 			FROM 口座
-			GROUP BY 口座番号
+			GROUP BY 名義
 			HAVING COUNT(*) >= 2) AS N 
-	ON K.口座番号 = N.口座番号
+	ON K.名義 = N.名義
 ORDER BY 名義, K.口座番号;
+
